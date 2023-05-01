@@ -14,7 +14,7 @@ public interface FrindRepo extends Neo4jRepository<Friend,Long> {
     List<Friend> findAllFriends();
 
     @Query("CREATE (f:Friend {name: $friendName, email: $friendEmail, friends: []}) RETURN f")
-    Friend addFriend(@Param("friendName") String friendName, @Param("friendEmail") String friendEmail);
+    Friend addFriend(@Param("friendName") String friendName, @Param("friendEmail") String friendEmail); //add user
 
 
     Friend findByName(String name);
@@ -25,7 +25,14 @@ public interface FrindRepo extends Neo4jRepository<Friend,Long> {
     @Query("MATCH (f1:Friend {name: $friend1Name}), (f2:Friend {name: $friend2Name}) " +
             "WHERE NOT EXISTS((f1)-[:FRIEND]-(f2)) " +
             "CREATE (f1)-[:FRIEND]->(f2), (f2)-[:FRIEND]->(f1)")
-    void addFriendship(@Param("friend1Name") String friend1Name, @Param("friend2Name") String friend2Name);
+    void addFriendship(@Param("friend1Name") String friend1Name, @Param("friend2Name") String friend2Name); //add frind dependency
 
+    @Query("MATCH (f1:Friend), (f2:Friend) " +
+            "WHERE id(f1) = $friend1Id AND id(f2) = $friend2Id " +
+            "AND NOT EXISTS((f1)-[:FRIEND]-(f2)) " +
+            "CREATE (f1)-[:FRIEND]->(f2), (f2)-[:FRIEND]->(f1)")
+    void addFriendshipById(@Param("friend1Id") Long friend1Id, @Param("friend2Id") Long friend2Id);//add frindship dependecy by id
 
+    @Query("MATCH (f1:Friend)-[:FRIEND]-(f2:Friend) WHERE id(f1) = $friend1Id AND id(f2) = $friend2Id RETURN COUNT(*) > 0")
+    boolean checkFriendshipById(@Param("friend1Id") Long friend1Id, @Param("friend2Id") Long friend2Id); // chack if there is already an frindship
 }

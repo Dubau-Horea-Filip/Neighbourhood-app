@@ -49,17 +49,22 @@ public class Friend {
         sb.append(", name='").append(name).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", friends=[");
-        for (int i = 0; i < friends.size(); i++) {
-            Friend friend = friends.get(i);
-            sb.append(friend.getId());
-            if (i < friends.size() - 1) {
-                sb.append(", ");
+
+        if (friends != null) {
+            for (int i = 0; i < friends.size(); i++) {
+                Friend friend = friends.get(i);
+                sb.append(friend.getId());
+                if (i < friends.size() - 1) {
+                    sb.append(", ");
+                }
             }
         }
+
         sb.append("]");
         sb.append('}');
         return sb.toString();
     }
+
 
     public List<Friend> getFriends() {
         return friends;

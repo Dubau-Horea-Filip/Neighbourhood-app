@@ -29,7 +29,7 @@ public class GraphNApplication implements CommandLineRunner {
 	{
 
 		friendsRepo.addFriendship(friend1,friend2);
-		friendsRepo.addFriendship(friend2,friend1);
+		//friendsRepo.addFriendship(friend2,friend1);
 	}
 
 	public void seeall() {
@@ -81,7 +81,7 @@ public class GraphNApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		//addUser();
-		seeall();
+		//seeall();
 	}}
 
 //			friends.add(friendsRepo.findByName("Filip")) ;
