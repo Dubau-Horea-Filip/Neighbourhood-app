@@ -24,16 +24,16 @@ public class GraphProjectApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-        Song s = new Song();
-        AppearsOn ap = new AppearsOn();
-        AppearsOnReverse apr = new AppearsOnReverse();
-        Release r = new Release();
-        r.setName("ana");
-        r.setYear(2022);
-        r.setAppearsOnReverses(List.of(apr));
-        ap.setRelease(r);  
-        s.setReleses(List.of());
-        songRepo.save(s);
+//        Song s = new Song();
+//        AppearsOn ap = new AppearsOn();
+//        AppearsOnReverse apr = new AppearsOnReverse();
+//        Release r = new Release();
+//        r.setName("ana");
+//        r.setYear(2022);
+//        r.setAppearsOnReverses(List.of(apr));
+//        ap.setRelease(r);
+//        s.setReleses(List.of(ap));
+//        songRepo.save(s);
 
 		for(Song song: songRepo.findAll())
 		{
