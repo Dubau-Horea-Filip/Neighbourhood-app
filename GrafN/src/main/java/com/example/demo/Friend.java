@@ -23,16 +23,22 @@ public class Friend {
     private List<Friend> friends;
 
 
-//
-//    public Friend(FriendFromDb existingFriend) {
-//        this.name = existingFriend.getName();
-//        this.email = existingFriend.getEmail();
-//        this.friends = existingFriend.getFriends();
-//    }
 
 
     public String getEmail() {
         return email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFriends(List<Friend> friends) {
+        this.friends = friends;
     }
 
     @Override
