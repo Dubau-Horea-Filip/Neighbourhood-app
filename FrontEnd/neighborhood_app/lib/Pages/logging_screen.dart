@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -24,8 +26,8 @@ class LoggingPage extends StatefulWidget {
 }
 
 class _LoggingPageState extends State<LoggingPage> {
-
   var userid;
+  var username = "";
   var email = "";
   var friends = [];
   var password = "";
@@ -37,11 +39,11 @@ class _LoggingPageState extends State<LoggingPage> {
   void initState() {
     controllerName = TextEditingController();
     controllerPassword = TextEditingController();
-   // getUserInfo();
+    // getUserInfo();
     super.initState();
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,15 +68,16 @@ class _LoggingPageState extends State<LoggingPage> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     String name = controllerName.text;
                     String pass = controllerPassword.text;
                     if (name.isNotEmpty && pass.isNotEmpty) {
-                      if (checkCredentials(name, pass)) {
+                      if (await checkCredentials(name, pass)) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) =>  MainPage()));  //(userid: userid, email: email, workoutPlansId: plansid)));
+                                builder: (_) =>
+                                    const MainPage())); //(userid: userid, email: email, workoutPlansId: plansid)));
                       } else {
                         showDialog(
                             context: context,
@@ -100,9 +103,27 @@ class _LoggingPageState extends State<LoggingPage> {
     );
   }
 
-   bool checkCredentials(name, pass) {
-    
-   
+  Future<bool> checkCredentials(email, pass) async {
+    var client = http.Client();
+    const url = 'http://localhost:8080/api/friends/user';
+    final uri = Uri.parse(url).replace(queryParameters: {
+      'UserEmail': email,
+      'UserPassword': pass,
+    });
+    final response = await client.get(uri);
+    final body = response.body;
+    if (body.isNotEmpty && response.statusCode == 200) {
+      final json = jsonDecode(body);
+      setState(() {
+        userid = json['id'];
+        username = json['name'];
+        this.email = json['email'];
+        password = json['password'];
+      });
+      return true;
+    } else {
+      return false;
+    }
   }
 
   login(name, pass) {}

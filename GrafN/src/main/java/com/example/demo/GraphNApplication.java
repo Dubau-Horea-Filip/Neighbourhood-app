@@ -96,6 +96,6 @@ public class GraphNApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		//addUser();
-		seeall();
+		//seeall();
 	}}
 
