@@ -28,6 +28,26 @@ public class FriendController {
         return list;
     }
 
+    public boolean isValidUser(String email, String password) {
+        Friend user = friendRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        return user.getPassword().equals(password);
+    }
+
+    @GetMapping("/user")
+    public Friend getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
+
+        if(isValidUser(UserEmail,UserPassword))
+        {
+            Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
+            return user;
+        }
+
+        return null;
+    }
+
 
     @PostMapping("/add")  //add a new user
     public ResponseEntity<Friend> addFriend(@RequestBody FriendJson friendJson) {

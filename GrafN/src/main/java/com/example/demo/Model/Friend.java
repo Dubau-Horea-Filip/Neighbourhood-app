@@ -15,6 +15,11 @@ public class Friend {
     private Long id;
     private String name;
     private String email;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
 
     @JsonIgnore
     @Relationship(type = "FRIEND", direction = Relationship.Direction.OUTGOING)
