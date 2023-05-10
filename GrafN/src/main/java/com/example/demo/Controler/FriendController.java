@@ -4,8 +4,10 @@ import com.example.demo.Model.Friend;
 import com.example.demo.Model.FriendJson;
 import com.example.demo.Repos.FrindRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping("/api/friends")
 public class FriendController {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final FrindRepo friendRepository;
 
     @Autowired
@@ -29,12 +33,19 @@ public class FriendController {
     }
 
     public boolean isValidUser(String email, String password) {
+
         Friend user = friendRepository.findByEmail(email).orElse(null);
         if (user == null) {
             return false;
         }
-        return user.getPassword().equals(password);
+        System.out.println(password);
+        String criptedPassword= passwordEncoder.encode(password);
+        System.out.println(criptedPassword);
+        return passwordEncoder.matches(password, user.getPassword());
     }
+
+
+
 
     @GetMapping("/user")
     public Friend getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
@@ -52,6 +63,11 @@ public class FriendController {
     @PostMapping("/add")  //add a new user
     public ResponseEntity<Friend> addFriend(@RequestBody FriendJson friendJson) {
 
+        String email = friendJson.getEmail();
+        if (friendRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         System.out.println(friendJson.getName());
         System.out.println(friendJson.getEmail());
 
@@ -59,6 +75,8 @@ public class FriendController {
         friend.setName(friendJson.getName());
         friend.setEmail(friendJson.getEmail());
         friend.setFriends(new ArrayList<>());
+        String encriptedPassword = passwordEncoder.encode(friendJson.getPassword());
+        friend.setPassword(encriptedPassword);
         friendRepository.save(friend);
         return ResponseEntity.status(HttpStatus.CREATED).body(friend);
     }

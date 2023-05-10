@@ -21,6 +21,10 @@ public class Friend {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @JsonIgnore
     @Relationship(type = "FRIEND", direction = Relationship.Direction.OUTGOING)
     private List<Friend> friends;
