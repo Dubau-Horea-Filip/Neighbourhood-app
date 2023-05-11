@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Node
@@ -57,6 +58,27 @@ public class Friend {
     public void setFriends(List<Friend> friends) {
         this.friends = friends;
     }
+
+    public List<String> getFriendEmails() {
+        List<String> friendEmails = new ArrayList<>();
+        if (friends != null) {
+            for (Friend friend : friends) {
+                friendEmails.add(friend.getEmail());
+            }
+        }
+        return friendEmails;
+    }
+
+    public List<String> getGroupNames() {
+        List<String> groupNames = new ArrayList<>();
+        if (groupList != null) {
+            for (Group group : groupList) {
+                groupNames.add(group.getGroupName());
+            }
+        }
+        return groupNames;
+    }
+
 
 
 

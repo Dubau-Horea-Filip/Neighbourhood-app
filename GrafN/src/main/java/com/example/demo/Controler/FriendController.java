@@ -4,7 +4,6 @@ import com.example.demo.Model.Friend;
 import com.example.demo.Model.FriendJson;
 import com.example.demo.Repos.FrindRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,12 +26,12 @@ public class FriendController {
     }
 
     @GetMapping
-    public List<Friend> getAllFriends() {
+    public List<Friend> getAllFriends() {  // returns all users
         List<Friend> list = friendRepository.findAll();
         return list;
     }
 
-    public boolean isValidUser(String email, String password) {
+    public boolean isValidUser(String email, String password) { //checks login info
 
         Friend user = friendRepository.findByEmail(email).orElse(null);
         if (user == null) {
@@ -47,14 +46,39 @@ public class FriendController {
 
 
 
-    @GetMapping("/user")
-    public Friend getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
+    @GetMapping("/user") // get information about current user
+    public FriendJson getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
 
         if(isValidUser(UserEmail,UserPassword))
         {
             Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
-            return user;
+            FriendJson userJ = new FriendJson();
+            assert user != null;
+            userJ.setEmail(user.getEmail());
+            userJ.setName(user.getName());
+            userJ.setFrinds_emails(user.getFriendEmails());
+            userJ.setGroupsName(user.getGroupNames());
+            return userJ;
         }
+
+        return null;
+    }
+
+    @GetMapping("/userL") // get information about current user
+    public FriendJson getUserIfCredentials(@RequestParam("UserEmail") String UserEmail) {
+
+        Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
+        if (user != null) {
+
+            FriendJson userJ = new FriendJson();
+            userJ.setEmail(user.getEmail());
+            userJ.setName(user.getName());
+            //userJ.setFrinds_emails(user.getFriendEmails());
+            userJ.setGroupsName(user.getGroupNames());
+            return userJ;
+        }
+
+
 
         return null;
     }
@@ -81,7 +105,7 @@ public class FriendController {
         return ResponseEntity.status(HttpStatus.CREATED).body(friend);
     }
 
-    @PostMapping("/add-friendship")
+    @PostMapping("/add-friendship")  // add a frind dependency
     public ResponseEntity<String> addFriendship(@RequestParam("friend1Id") Long friend1Id, @RequestParam("friend2Id") Long friend2Id) {
         // Check if the friends with the given IDs exist
         Friend friend1 = friendRepository.findById(friend1Id).orElse(null);

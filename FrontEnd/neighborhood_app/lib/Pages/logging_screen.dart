@@ -7,6 +7,8 @@ import 'package:neighborhood_app/Pages/main_page.dart';
 import 'package:neighborhood_app/Pages/sign_in_page.dart';
 import 'package:neighborhood_app/Widgets/text_box.dart';
 
+import '../Model/User.dart';
+
 class LoggingPage extends StatefulWidget {
   const LoggingPage({super.key, required this.title});
 
@@ -26,11 +28,12 @@ class LoggingPage extends StatefulWidget {
 }
 
 class _LoggingPageState extends State<LoggingPage> {
-  var userid;
-  var username = "";
-  var email = "";
-  var friends = [];
-  var password = "";
+  var user_id;
+  var user_name = "";
+  var user_email = "";
+  var user_friends_emails = [];
+  var user_groups_names = [];
+  late User user;
 
   late TextEditingController controllerName;
   late TextEditingController controllerPassword;
@@ -77,7 +80,7 @@ class _LoggingPageState extends State<LoggingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) =>
-                                    const MainPage())); //(userid: userid, email: email, workoutPlansId: plansid)));
+                                     MainPage(user: user))); //(userid: userid, email: email, workoutPlansId: plansid)));
                       } else {
                         showDialog(
                             context: context,
@@ -115,40 +118,11 @@ class _LoggingPageState extends State<LoggingPage> {
     if (body.isNotEmpty && response.statusCode == 200) {
       final json = jsonDecode(body);
       setState(() {
-        userid = json['id'];
-        username = json['name'];
-        this.email = json['email'];
-        password = json['password'];
+        user = User.fromJson(json);
       });
       return true;
     } else {
       return false;
     }
-  }
-
-  login(name, pass) {}
-
-  empty() {}
-
-  Future<void> getUserInfo() async {
-    var client = http.Client();
-    const url = 'http://10.0.2.2:8080/user/current'; // user info
-    //const url = 'http://192.168.110.1:8080/user/current';
-    //const url = 'http://192.168.1.102:8080/user/current'; // fasole ip
-    // "id": 0,
-    //     "email": "testuser@gmail.com",
-    //     "workoutPlans": [
-    //         3
-    //     ]
-    final uri = Uri.parse(url);
-    final response = await client.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
-
-    setState(() {
-      userid = json['id'];
-      email = json['email'];
-      password = json['password'];
-    });
   }
 }

@@ -1,8 +1,31 @@
 package com.example.demo.Model;
 
+import java.util.List;
+
 public class FriendJson {
     private String name;
     private String email;
+
+    private String password;
+
+    private List<String> frinds_emails;
+    private List<String> groupsName;
+
+    public List<String> getGroupsName() {
+        return groupsName;
+    }
+
+    public void setGroupsName(List<String> groupsName) {
+        this.groupsName = groupsName;
+    }
+
+    public List<String> getFrinds_emails() {
+        return frinds_emails;
+    }
+
+    public void setFrinds_emails(List<String> frinds_emails) {
+        this.frinds_emails = frinds_emails;
+    }
 
     public String getPassword() {
         return password;
@@ -12,10 +35,11 @@ public class FriendJson {
         this.password = password;
     }
 
-    private String password;
 
-    // Constructors, getters, and setters
-    // ...
+    public FriendJson()
+    {}
+
+
 
     public FriendJson(String name, String email) {
         this.name = name;
