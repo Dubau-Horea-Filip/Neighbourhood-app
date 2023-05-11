@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:neighborhood_app/Pages/profile_page.dart';
 import 'package:http/http.dart' as http;
 import '../Model/User.dart';
+import '../Widgets/NavBar.dart';
 import '../Widgets/list_of_frinds_from_user.dart';
 
 class MainPage extends StatefulWidget {
@@ -27,10 +28,11 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // drawer:  NavBar( plansid: plansid),
+        drawer:  NavBar( user: widget.user),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 104, 26, 26),
           title: const Text("Home Page"),
+          
           actions: [
             IconButton(
               splashRadius: 25,
