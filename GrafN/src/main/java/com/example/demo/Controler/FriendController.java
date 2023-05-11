@@ -31,6 +31,7 @@ public class FriendController {
         return list;
     }
 
+
     public boolean isValidUser(String email, String password) { //checks login info
 
         Friend user = friendRepository.findByEmail(email).orElse(null);

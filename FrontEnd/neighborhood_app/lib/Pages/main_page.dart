@@ -21,7 +21,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.user);
     populateUsersFromFriends();
   }
 
@@ -58,7 +57,6 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> populateUsersFromFriends() async {
     final List<User> userList = [];
-    print(widget.user.friends);
     for (final friendEmail in widget.user.friends) {
       final userData = await getUserDataByEmail(friendEmail);
       if (userData == null) {
@@ -69,8 +67,6 @@ class _MainPageState extends State<MainPage> {
     }
     setState(() {
       users = userList;
-      print(userList);
-      print(users);
     });
   }
 

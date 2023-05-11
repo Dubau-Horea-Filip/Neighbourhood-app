@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:neighborhood_app/Pages/SignIn_Page.dart';
 import 'package:neighborhood_app/Pages/main_page.dart';
-import 'package:neighborhood_app/Pages/sign_in_page.dart';
 import 'package:neighborhood_app/Widgets/text_box.dart';
 
 import '../Model/User.dart';
@@ -64,7 +64,7 @@ class _LoggingPageState extends State<LoggingPage> {
               child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const MyWidget()));
+                        MaterialPageRoute(builder: (_) => const SignINPage()));
                   },
                   child: const Text("Sign Up")),
             ),
