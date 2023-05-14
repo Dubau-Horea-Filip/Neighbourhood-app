@@ -13,15 +13,6 @@ import java.util.List;
 @Node
 public class Group {
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "groupId=" + id +
-                ", Location='" + location + '\'' +
-                ", groupName='" + groupName + '\'' +
-                '}';
-    }
-
     @Id
     @GeneratedValue
     private Long id;
@@ -32,12 +23,31 @@ public class Group {
 
     private String location;
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "groupId=" + id +
+                ", Location='" + location + '\'' +
+                ", groupName='" + groupName + '\'' +
+                '}';
+    }
+
+
+
     public Long getId() {
         return id;
     }
 
     public List<Friend> getMemberList() {
         return memberList;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getLocation() {

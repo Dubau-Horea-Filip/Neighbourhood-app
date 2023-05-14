@@ -21,6 +21,22 @@ public class GroupController {
         this.friendRepository = friendRepository;
     }
 
+    @PostMapping("/create-group")
+    public ResponseEntity<String> createGroup(@RequestParam("groupName") String groupName) {
+        // Check if the group already exists
+        if (groupRepo.findByGroupName(groupName).isPresent()) {
+            return ResponseEntity.badRequest().body("Group already exists.");
+        }
+
+        // Create new group
+        Group group = new Group();
+        group.setGroupName(groupName);
+        groupRepo.save(group);
+
+        return ResponseEntity.ok("Group created successfully.");
+    }
+
+
 
     @PostMapping("/add-membership")
     public ResponseEntity<String> addMembership(@RequestParam("groupName") String groupName, @RequestParam("userEmail") String userEmail) {

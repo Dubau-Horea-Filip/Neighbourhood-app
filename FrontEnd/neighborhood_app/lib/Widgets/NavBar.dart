@@ -1,10 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:neighborhood_app/Pages/empty_page.dart';
 import 'package:neighborhood_app/Pages/logging_screen.dart';
+import 'package:neighborhood_app/Pages/profile_page.dart';
 
 import '../Model/User.dart';
 import '../Pages/changePaswordPage.dart';
+import '../new/profile.dart';
 
 class NavBar extends StatelessWidget {
   final User user;
@@ -24,22 +27,30 @@ class NavBar extends StatelessWidget {
               color: Color.fromARGB(255, 104, 26, 26),
             ),
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.today),
-          //   title: const Text('Workout Plans'),
-          //   onTap: () => {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (_) => const addWorkoutsPage()))
-          //   },
-          // ),
-          // ListTile(
-          //   leading: const Icon(Icons.timeline),
-          //   title: const Text('Statistics'),
-          //   onTap: () => {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (_) =>  StatisticPage( plansid: plansid)))
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.today),
+            title: const Text('Make Conections'),
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => const EMptyPage()))
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.timeline),
+            title: const Text('My groups'),
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => EMptyPage()))
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.timeline),
+            title: const Text('My profile Eddit'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => ProfilePage(user: user)))
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.security),
             title: const Text('Security'),

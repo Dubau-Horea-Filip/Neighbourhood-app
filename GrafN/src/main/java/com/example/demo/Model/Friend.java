@@ -5,8 +5,11 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Node
 public class Friend {
@@ -15,8 +18,19 @@ public class Friend {
     @Id @GeneratedValue
     private Long id;
     private String name;
+
+
     private String email;
     private String password;
+    private String about;
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
 
     public String getPassword() {
         return password;
@@ -79,6 +93,19 @@ public class Friend {
         return groupNames;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Friend friend = (Friend) o;
+        return Objects.equals(id, friend.id) &&
+                Objects.equals(name, friend.name) &&
+                Objects.equals(email, friend.email) &&
+                Objects.equals(password, friend.password) &&
+                Objects.equals(about, friend.about);
+    }
+
+
 
 
 
@@ -89,6 +116,7 @@ public class Friend {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", email='").append(email).append('\'');
+        sb.append(", about='").append(about).append('\'');
         sb.append(", friends=[");
 
         if (friends != null) {

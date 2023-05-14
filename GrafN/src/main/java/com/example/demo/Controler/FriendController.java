@@ -47,7 +47,7 @@ public class FriendController {
 
 
 
-    @GetMapping("/user") // get information about current user
+    @GetMapping("/user") // get information about current user nedding password
     public FriendJson getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
 
         if(isValidUser(UserEmail,UserPassword))
@@ -126,4 +126,22 @@ public class FriendController {
 
         return ResponseEntity.ok("Friendship added successfully.");//+ friend1Id + friend2Id);
     }
+
+    @PutMapping("/{id}/about")
+    public ResponseEntity<String> updateUserAbout(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserAbout") String UserAbout) {
+        // Check if user with the given id exists
+        Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User with email " + UserEmail + " does not exist.");
+        }
+
+        // Update user's about field
+
+
+        user.setAbout(UserAbout);
+        friendRepository.save(user);
+
+        return ResponseEntity.ok("User updated successfully.");
+    }
+
 }
