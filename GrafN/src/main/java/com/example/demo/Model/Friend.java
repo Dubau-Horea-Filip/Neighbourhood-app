@@ -24,6 +24,8 @@ public class Friend {
     private String password;
     private String about;
 
+
+    @Relationship(type = "FRIEND_REQUESTS", direction = Relationship.Direction.INCOMING)
     private List<Friend> friendRequests;
 
     public String getAbout() {

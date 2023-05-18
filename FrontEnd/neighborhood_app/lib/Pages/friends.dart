@@ -26,54 +26,58 @@ class _AddFriendsState extends State<AddFriends> {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasFriendRequests = friendsrequests.isNotEmpty;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Make connections"),
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Friend Requests",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          if (hasFriendRequests)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "Friend Requests",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          Container(
-            height: 200,
-            child: ListView.separated(
-              itemCount: friendsrequests.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final friendRequest = friendsrequests[index];
-                return ListTile(
-                  title: Text(friendRequest.name),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Handle accept friend request button press
-                          acceptRequest(friendRequest);
-                        },
-                        child: const Text("Accept"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Handle decline friend request button press
-                          //declineFriendRequest(friendRequest);
-                        },
-                        child: const Text("Decline"),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    // Handle onTap event for the friend request
-                  },
-                );
-              },
+          if (hasFriendRequests)
+            Container(
+              height: 200,
+              child: ListView.separated(
+                itemCount: friendsrequests.length,
+                separatorBuilder: (context, index) => const Divider(),
+                itemBuilder: (context, index) {
+                  final friendRequest = friendsrequests[index];
+                  return ListTile(
+                    title: Text(friendRequest.name),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle accept friend request button press
+                            acceptRequest(friendRequest);
+                          },
+                          child: const Text("Accept"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle decline friend request button press
+                            //declineFriendRequest(friendRequest);
+                          },
+                          child: const Text("Decline"),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      // Handle onTap event for the friend request
+                    },
+                  );
+                },
+              ),
             ),
-          ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text(

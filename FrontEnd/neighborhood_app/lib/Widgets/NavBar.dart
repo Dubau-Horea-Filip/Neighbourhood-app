@@ -53,14 +53,14 @@ class NavBar extends StatelessWidget {
                           )))
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            title: const Text('My profile Eddit'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ProfilePage(user: user)))
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.edit),
+          //   title: const Text('My profile Eddit'),
+          //   onTap: () => {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (_) => ProfilePage(user: user)))
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.security),
             title: const Text('Security'),

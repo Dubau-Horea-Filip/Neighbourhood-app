@@ -108,18 +108,18 @@ public class FriendController {
 
     @PostMapping("/send-friend-request")
     public ResponseEntity<String> sendFrindRequest(@RequestParam("sender") String sender, @RequestParam("reciever") String reciever) {
-        Friend friend1 = friendRepository.findByEmail(sender).orElse(null);
-        Friend friend2 = friendRepository.findByEmail(reciever).orElse(null);
-        if (friend1 == null || friend2 == null) {
+        Friend senderEmial = friendRepository.findByEmail(sender).orElse(null);
+        Friend ReceiverEmail = friendRepository.findByEmail(reciever).orElse(null);
+        if (senderEmial == null || ReceiverEmail == null) {
             return ResponseEntity.badRequest().body("One or both friends do not exist.");
         }
-        List<Friend> friendRequests = friend2.getFriendRequests();
+        List<Friend> friendRequests = ReceiverEmail.getFriendRequests();
         if (friendRequests.contains(sender)) {
             return ResponseEntity.badRequest().body("Friend request already exists.");
         }
 
-        friend2.getFriendRequests().add(friend1);
-        friendRepository.save(friend2);
+        ReceiverEmail.getFriendRequests().add(senderEmial);
+        friendRepository.save(ReceiverEmail);
         return ResponseEntity.ok("sent friend request");
     }
     @GetMapping("/get-friend-requests")

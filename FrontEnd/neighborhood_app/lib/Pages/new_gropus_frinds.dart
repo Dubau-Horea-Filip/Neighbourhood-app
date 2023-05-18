@@ -146,6 +146,11 @@ class _AddGroupsAddFrindsState extends State<AddGroupsAddFrinds> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
+                setState(() {
+                  groups.add(group);
+                  potentialGroups.remove(
+                      group); // Add the group to the existing groups list
+                });
               },
               child: const Text('OK'),
             ),
@@ -219,6 +224,10 @@ class _AddGroupsAddFrindsState extends State<AddGroupsAddFrinds> {
           actions: [
             TextButton(
               onPressed: () {
+                setState(() {
+                  potentialGroups
+                      .add(group); // Add the group to the existing groups list
+                });
                 Navigator.of(context).pop();
               },
               child: const Text("OK"),

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../Model/User.dart';
 import '../Widgets/NavBar.dart';
 import '../Widgets/list_of_frinds_from_user.dart';
+import '../new/profile.dart';
 
 class MainPage extends StatefulWidget {
   final User user;
@@ -46,7 +47,11 @@ class _MainPageState extends State<MainPage> {
             ),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const Profile()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => ProfilePage(
+                            user: widget.user,
+                          )));
             },
           ),
         ],
