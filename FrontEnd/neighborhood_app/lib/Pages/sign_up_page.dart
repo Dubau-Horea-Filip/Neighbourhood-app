@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:neighborhood_app/Widgets/text_box.dart';
 import 'package:http/http.dart' as http;
 
-class SignINPage extends StatefulWidget {
-  const SignINPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignINPage> createState() => _SignINPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignINPageState extends State<SignINPage> {
+class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController controllerName;
   late TextEditingController controllerEmail;
   late TextEditingController controllerPassword;
@@ -30,10 +30,10 @@ class _SignINPageState extends State<SignINPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 104, 26, 26),
-        title: const Text("sign in"),
+        //backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+        title: const Text("sign up"),
       ),
-      backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+      //backgroundColor: const Color.fromARGB(255, 49, 49, 49),
       body: Center(
         child: ListView(
           children: [

@@ -7,6 +7,7 @@ import 'package:neighborhood_app/Pages/profile_page.dart';
 
 import '../Model/User.dart';
 import '../Pages/changePaswordPage.dart';
+import '../Pages/new_gropus_frinds.dart';
 import '../new/profile.dart';
 
 class NavBar extends StatelessWidget {
@@ -24,7 +25,7 @@ class NavBar extends StatelessWidget {
             accountName: Text(user.name),
             accountEmail: Text(user.email),
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 104, 26, 26),
+              color: Color.fromARGB(255, 8, 133, 52),
             ),
           ),
           ListTile(
@@ -32,7 +33,11 @@ class NavBar extends StatelessWidget {
             title: const Text('Make Conections'),
             onTap: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const EMptyPage()))
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => AddGroupsAddFrinds(
+                            user: user,
+                          )))
             },
           ),
           ListTile(

@@ -13,10 +13,10 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
    return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+          //backgroundColor: const Color.fromARGB(255, 104, 26, 26),
           title: const Text("Profile"),
         ),
-        backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+        //backgroundColor: const Color.fromARGB(255, 49, 49, 49),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

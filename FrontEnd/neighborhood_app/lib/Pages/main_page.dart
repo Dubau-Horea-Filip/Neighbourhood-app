@@ -28,33 +28,34 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer:  NavBar( user: widget.user),
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 104, 26, 26),
-          title: const Text("Home Page"),
-          
-          actions: [
-            IconButton(
-              splashRadius: 25,
-              icon: const CircleAvatar(
-                minRadius: 25,
-                // foregroundImage: Image.asset(
-                //   'assets/Krunal.jpg',
-                // ),
-                // backgroundImage: Image.asset('assets/profile.png'),
-                child: Text("profile"),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const Profile()));
-              },
+      drawer: NavBar(user: widget.user),
+      appBar: AppBar(
+        //backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+        title: const Text("Home Page"),
+
+        actions: [
+          IconButton(
+            splashRadius: 25,
+            icon: const CircleAvatar(
+              minRadius: 25,
+              // foregroundImage: Image.asset(
+              //   'assets/Krunal.jpg',
+              // ),
+              // backgroundImage: Image.asset('assets/profile.png'),
+              child: Text("profile"),
             ),
-          ],
-        ),
-        body: users.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : UserListWidget(users: users),
-        backgroundColor: const Color.fromARGB(255, 49, 49, 49));
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => const Profile()));
+            },
+          ),
+        ],
+      ),
+      body: users.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : UserListWidget(users: users),
+      //backgroundColor: const Color.fromARGB(255, 49, 49, 49)
+    );
   }
 
   Future<void> populateUsersFromFriends() async {

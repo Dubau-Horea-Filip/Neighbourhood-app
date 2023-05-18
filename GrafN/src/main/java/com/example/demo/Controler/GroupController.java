@@ -2,11 +2,14 @@ package com.example.demo.Controler;
 
 import com.example.demo.Model.Friend;
 import com.example.demo.Model.Group;
+import com.example.demo.Model.GroupJson;
 import com.example.demo.Repos.FrindRepo;
 import com.example.demo.Repos.GroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/group")
@@ -71,5 +74,84 @@ public class GroupController {
         groupRepo.removeGroupDependency(groupName,userEmail);
         return ResponseEntity.ok("Membership removed successfully.");
     }
+
+
+//    @GetMapping("/potential-groups")
+//    public ResponseEntity<List<Group>> getPotentialGroups(@RequestParam("userEmail") String userEmail) {
+//        Optional<Friend> friendOptional = friendRepository.findByEmail(userEmail);
+//        if (friendOptional.isEmpty()) {
+//            return ResponseEntity.badRequest().body(Collections.emptyList());
+//        }
+//
+//        Friend friend = friendOptional.get();
+//        List<Group> potentialGroups = groupRepo.findPotentialGroups(friend.getEmail());
+//
+//        // Sort the potentialGroups list based on the number of friends in each group
+//        potentialGroups.sort(Comparator.comparingInt(group -> {
+//            int friendCount = groupRepo.getFriendCountInGroup(friend.getEmail(), group.getGroupName());
+//            return -friendCount; // negate the count to sort in descending order
+//        }));
+//
+//        return ResponseEntity.ok(potentialGroups);
+//    }
+
+
+
+
+
+
+    @GetMapping("/potential-groups")
+    public ResponseEntity<List<GroupJson>> getPotentialGroups(@RequestParam("userEmail") String userEmail) {
+        Optional<Friend> friendOptional = friendRepository.findByEmail(userEmail);
+        if (friendOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        Friend friend = friendOptional.get();
+        List<Group> potentialGroups = groupRepo.findPotentialGroups(friend.getEmail());
+
+        List<GroupJson> groupJsonList = new ArrayList<>();
+        for (Group group : potentialGroups) {
+            GroupJson groupJson = new GroupJson();
+            groupJson.setGroupName(group.getGroupName());
+            groupJson.setLocation(group.getLocation());
+            groupJson.setMemberList(group.getMemberList());
+            int numCommonFriends = groupRepo.getFriendCountInGroup(friend.getEmail(), group.getGroupName());
+            groupJson.setNumCommonFriends(numCommonFriends);
+            groupJsonList.add(groupJson);
+        }
+
+        // Sort the groupJsonList based on the number of common friends in descending order
+        groupJsonList.sort(Comparator.comparingInt(GroupJson::getNumCommonFriends).reversed());
+
+        return ResponseEntity.ok(groupJsonList);
+    }
+
+
+
+    @GetMapping("/user-groups")
+    public ResponseEntity<List<Group>> getUserGroups(@RequestParam("userEmail") String userEmail) {
+        Optional<Friend> friendOptional = friendRepository.findByEmail(userEmail);
+        if (friendOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        Friend friend = friendOptional.get();
+        List<Group> userGroups = groupRepo.findUserGroups(friend.getEmail());
+
+        return ResponseEntity.ok(userGroups);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

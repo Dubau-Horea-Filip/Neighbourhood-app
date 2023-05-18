@@ -14,7 +14,7 @@ class _EMptyPageState extends State<EMptyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+        //backgroundColor: const Color.fromARGB(255, 104, 26, 26),
         title: const Text("Empty Page"),
       ),
     );

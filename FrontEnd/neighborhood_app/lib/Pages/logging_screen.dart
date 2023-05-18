@@ -3,11 +3,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:neighborhood_app/Pages/SignIn_Page.dart';
+import 'package:neighborhood_app/Pages/sign_up_page.dart';
 import 'package:neighborhood_app/Pages/main_page.dart';
-import 'package:neighborhood_app/Widgets/text_box.dart';
 
 import '../Model/User.dart';
+import '../Widgets/button.dart';
+import '../Widgets/textfield_widget.dart';
 
 class LoggingPage extends StatefulWidget {
   const LoggingPage({super.key, required this.title});
@@ -50,56 +51,64 @@ class _LoggingPageState extends State<LoggingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+        // backgroundColor: Color.fromARGB(255, 8, 133, 52),
         title: Text(widget.title),
       ),
-      backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+      //backgroundColor: Color.fromARGB(255, 231, 255, 239),
       body: Center(
         child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 32),
+          physics: BouncingScrollPhysics(),
           children: [
-            TextBox(controllerName, "Name"),
-            TextBox(controllerPassword, "password"),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const SignINPage()));
-                  },
-                  child: const Text("Sign Up")),
+            const SizedBox(height: 24),
+            TextFieldWidgetController(
+                label: 'Email', controller: controllerName),
+            const SizedBox(height: 24),
+            TextFieldWidgetController(
+                label: 'Password', controller: controllerPassword),
+            const SizedBox(height: 24),
+            ButtonWidget(
+              onClicked: () {
+                {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const SignUpPage()));
+                }
+              },
+              text: 'Sign Up',
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    String name = controllerName.text;
-                    String pass = controllerPassword.text;
-                    if (name.isNotEmpty && pass.isNotEmpty) {
-                      if (await checkCredentials(name, pass)) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                     MainPage(user: user))); //(userid: userid, email: email, workoutPlansId: plansid)));
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (_) => const AlertDialog(
-                                  //title: Text("opa"),
-                                  content: Text("Invalid Credentials"),
-                                ));
-                      }
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (_) => const AlertDialog(
-                                //title: Text("opa"),
-                                content: Text("All filds shoud be filled"),
-                              ));
-                    }
-                  },
-                  child: const Text("Login")),
-            )
+            const SizedBox(height: 24),
+            ButtonWidget(
+              onClicked: () async {
+                String name = controllerName.text;
+                String pass = controllerPassword.text;
+                if (name.isNotEmpty && pass.isNotEmpty) {
+                  if (await checkCredentials(name, pass)) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => MainPage(
+                                user:
+                                    user))); //(userid: userid, email: email, workoutPlansId: plansid)));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (_) => const AlertDialog(
+                              //title: Text("opa"),
+                              content: Text("Invalid Credentials"),
+                            ));
+                  }
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (_) => const AlertDialog(
+                            //title: Text("opa"),
+                            content: Text("All filds shoud be filled"),
+                          ));
+                }
+              },
+              text: 'Login',
+            ),
+            const SizedBox(height: 24),
           ],
         ),
       ),
