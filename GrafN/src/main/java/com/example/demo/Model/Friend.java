@@ -24,6 +24,8 @@ public class Friend {
     private String password;
     private String about;
 
+    private List<Friend> friendRequests;
+
     public String getAbout() {
         return about;
     }
@@ -48,6 +50,16 @@ public class Friend {
     @Relationship(type = "GROUP", direction = Relationship.Direction.OUTGOING)
     private List<Group> groupList;
 
+
+
+
+    public List<Friend> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public void setFriendRequests(List<Friend> friendRequests) {
+        this.friendRequests = friendRequests;
+    }
 
     public List<Group> getGroupList() {
         return groupList;
@@ -140,6 +152,20 @@ public class Friend {
             }
         }
         sb.append("]");
+
+        sb.append("], friendRequests=[");
+
+        if (friendRequests != null) {
+            for (int i = 0; i < friendRequests.size(); i++) {
+                Friend friendRequest = friendRequests.get(i);
+                sb.append(friendRequest.getId());
+                if (i < friendRequests.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+        }
+
+        sb.append("]}");
         sb.append('}');
         return sb.toString();
     }

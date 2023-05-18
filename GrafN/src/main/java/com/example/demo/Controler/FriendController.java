@@ -2,15 +2,16 @@ package com.example.demo.Controler;
 
 import com.example.demo.Model.Friend;
 import com.example.demo.Model.FriendJson;
+import com.example.demo.Model.Group;
 import com.example.demo.Repos.FrindRepo;
+import com.example.demo.Repos.GroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/friends")
@@ -20,9 +21,12 @@ public class FriendController {
     private PasswordEncoder passwordEncoder;
     private final FrindRepo friendRepository;
 
+    private final GroupRepo groupRepo;
+
     @Autowired
-    public FriendController(FrindRepo friendRepository) {
+    public FriendController(FrindRepo friendRepository, GroupRepo groupRepo) {
         this.friendRepository = friendRepository;
+        this.groupRepo = groupRepo;
     }
 
     @GetMapping
@@ -39,19 +43,16 @@ public class FriendController {
             return false;
         }
         System.out.println(password);
-        String criptedPassword= passwordEncoder.encode(password);
+        String criptedPassword = passwordEncoder.encode(password);
         System.out.println(criptedPassword);
         return passwordEncoder.matches(password, user.getPassword());
     }
 
 
-
-
     @GetMapping("/user") // get information about current user nedding password
     public FriendJson getUserIfCredentials(@RequestParam("UserEmail") String UserEmail, @RequestParam("UserPassword") String UserPassword) {
 
-        if(isValidUser(UserEmail,UserPassword))
-        {
+        if (isValidUser(UserEmail, UserPassword)) {
             Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
             FriendJson userJ = new FriendJson();
             assert user != null;
@@ -80,7 +81,6 @@ public class FriendController {
         }
 
 
-
         return null;
     }
 
@@ -106,23 +106,85 @@ public class FriendController {
         return ResponseEntity.status(HttpStatus.CREATED).body(friend);
     }
 
+    @PostMapping("/send-friend-request")
+    public ResponseEntity<String> sendFrindRequest(@RequestParam("sender") String sender, @RequestParam("reciever") String reciever) {
+        Friend friend1 = friendRepository.findByEmail(sender).orElse(null);
+        Friend friend2 = friendRepository.findByEmail(reciever).orElse(null);
+        if (friend1 == null || friend2 == null) {
+            return ResponseEntity.badRequest().body("One or both friends do not exist.");
+        }
+        List<Friend> friendRequests = friend2.getFriendRequests();
+        if (friendRequests.contains(sender)) {
+            return ResponseEntity.badRequest().body("Friend request already exists.");
+        }
+
+        friend2.getFriendRequests().add(friend1);
+        friendRepository.save(friend2);
+        return ResponseEntity.ok("sent friend request");
+    }
+    @GetMapping("/get-friend-requests")
+    public ResponseEntity<List<Friend>>  getFrindRequest( @RequestParam("email") String reciever) {
+        Friend friend = friendRepository.findByEmail(reciever).orElse(null);
+        if (friend == null) {
+            return null;
+        }
+        List<Friend> friendRequests = friend.getFriendRequests();
+        return ResponseEntity.ok(friendRequests);
+    }
+
+
+//    @PostMapping("/add-friendship")  // add a frind dependency
+//    public ResponseEntity<String> addFriendship(@RequestParam("friend1Id") Long friend1Id, @RequestParam("friend2Id") Long friend2Id) {
+//        // Check if the friends with the given IDs exist
+//        Friend friend1 = friendRepository.findById(friend1Id).orElse(null);
+//        Friend friend2 = friendRepository.findById(friend2Id).orElse(null);
+//
+//
+//
+//        if (friend1 == null || friend2 == null) {
+//            return ResponseEntity.badRequest().body("One or both friends do not exist.");
+//        }
+//
+//        friend2.getFriendRequests().remove(friend1);
+//        friend1.getFriendRequests().remove(friend2);
+//
+//        // Check if the friendship relationship already exists
+//        if (friendRepository.checkFriendshipById(friend1Id, friend2Id)) {
+//            return ResponseEntity.ok("Friendship already exists.");
+//        }
+//
+//        // Add friendship relationship
+//
+//        friendRepository.addFriendshipById(friend1Id, friend2Id);
+//
+//        return ResponseEntity.ok("Friendship added successfully.");//+ friend1Id + friend2Id);
+//    }
+
     @PostMapping("/add-friendship")  // add a frind dependency
-    public ResponseEntity<String> addFriendship(@RequestParam("friend1Id") Long friend1Id, @RequestParam("friend2Id") Long friend2Id) {
+    public ResponseEntity<String> addFriendship(@RequestParam("sender") String sender, @RequestParam("receiver") String receiver) {
         // Check if the friends with the given IDs exist
-        Friend friend1 = friendRepository.findById(friend1Id).orElse(null);
-        Friend friend2 = friendRepository.findById(friend2Id).orElse(null);
+        Friend friend1 = friendRepository.findByEmail(sender).orElse(null);
+        Friend friend2 = friendRepository.findByEmail(receiver).orElse(null);
+
+
 
         if (friend1 == null || friend2 == null) {
             return ResponseEntity.badRequest().body("One or both friends do not exist.");
         }
+
+        friend2.getFriendRequests().remove(friend1);
+        friend1.getFriendRequests().remove(friend2);
+        friendRepository.save(friend2);
+        friendRepository.save(friend1);
+
         // Check if the friendship relationship already exists
-        if (friendRepository.checkFriendshipById(friend1Id, friend2Id)) {
+        if (friendRepository.checkFriendshipByEmail(receiver, sender)) {
             return ResponseEntity.ok("Friendship already exists.");
         }
 
         // Add friendship relationship
 
-        friendRepository.addFriendshipById(friend1Id, friend2Id);
+        friendRepository.addFriendshipByEmail(sender, receiver);
 
         return ResponseEntity.ok("Friendship added successfully.");//+ friend1Id + friend2Id);
     }
@@ -142,6 +204,44 @@ public class FriendController {
         friendRepository.save(user);
 
         return ResponseEntity.ok("User updated successfully.");
+    }
+
+    @GetMapping("/potential-friends")
+    public ResponseEntity<List<Friend>> getPotentialFriends(@RequestParam("userEmail") String userEmail) {
+        Friend user = friendRepository.findByEmail(userEmail).orElse(null);
+        if (user != null) {
+            Set<Friend> potentialFriends = new HashSet<>();
+
+            for (Friend friend : user.getFriends()) {
+                List<Friend> mutualFriends = friendRepository.findFriendsByEmail(friend.getEmail());
+                for (Friend friend2 : mutualFriends) {
+                    if (!friend2.getEmail().equals(userEmail)) {
+                        potentialFriends.add(friend2);
+                    }
+                }
+            }
+
+            // Add friends from the same groups as the user
+            List<Group> userGroups = groupRepo.findUserGroups(userEmail);
+            System.out.println("User  grops: " + userGroups);
+            for (Group group : userGroups) {
+                List<String> groupMembers = groupRepo.findNonFriendUserEmailsInGroup(group.getGroupName(), userEmail);
+
+                for (String  friend2 : groupMembers) {
+
+
+                    if (!userEmail.equals(friend2)) {
+                        friendRepository.findByEmail(friend2).ifPresent(potentialFriends::add);
+                    }
+                }
+            }
+
+
+
+            return ResponseEntity.ok(new ArrayList<>(potentialFriends));
+        }
+
+        return null;
     }
 
 }

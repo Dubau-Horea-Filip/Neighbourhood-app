@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface GroupRepo extends Neo4jRepository<Group,Long> {
@@ -16,6 +17,26 @@ public interface GroupRepo extends Neo4jRepository<Group,Long> {
 
 //    @Query("MATCH (g:Group) WHERE id(g) = $groupId RETURN g")
 //    Optional<Group> findById(@Param("groupId") Long groupId);
+
+
+
+//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f")
+//    List<Friend> findUsersInGroup(@Param("groupName") String groupName);
+//
+//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f.name, f.email, f.password, f.about, f.groupList, f.friends")
+//    List<Friend> findFriendsInGroup(@Param("groupName") String groupName);
+
+
+//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f.name AS name, f.email AS email, f.password AS password, f.about AS about, f.groupList AS groupList, f.friends AS friends")
+//    List<Map<String, Object>> findFriendsInGroupdata(@Param("groupName") String groupName);
+
+
+
+
+    @Query("MATCH (u:Friend)-[:GROUP]->(g:Group {groupName: $groupName}) WHERE NOT EXISTS((u)-[:FRIEND]->(:Friend {email: $userEmail})) RETURN u")
+    List<Friend> findNonFriendUsersInGroup(@Param("groupName") String groupName, @Param("userEmail") String userEmail);
+
+
 
     Optional<Group> findByGroupName(String name);
     @Query("CREATE (g:Group {location: $location, groupName: $groupName}) RETURN g")
@@ -55,6 +76,12 @@ public interface GroupRepo extends Neo4jRepository<Group,Long> {
 
     @Query("MATCH (:Friend {email: $userEmail})-[:FRIEND]->(f:Friend)-[:GROUP]->(:Group {groupName: $groupName}) RETURN count(f)")
     int getFriendCountInGroup(@Param("userEmail") String userEmail, @Param("groupName") String groupName);
+
+    @Query("MATCH (:Friend {email: $userEmail})-[:GROUP]->(g:Group)<-[:GROUP]-(:Friend {email: $friendEmail}) RETURN g")
+    List<Group> findMutualGroups(@Param("userEmail") String userEmail, @Param("friendEmail") String friendEmail);
+
+    @Query("MATCH (u:Friend)-[:GROUP]->(g:Group {groupName: $groupName}) WHERE NOT EXISTS((u)-[:FRIEND]->(:Friend {email: $userEmail})) RETURN u.email")
+    List<String> findNonFriendUserEmailsInGroup(@Param("groupName") String groupName, @Param("userEmail") String userEmail);
 
 
 

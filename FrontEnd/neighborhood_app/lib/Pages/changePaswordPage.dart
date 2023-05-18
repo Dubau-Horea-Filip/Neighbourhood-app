@@ -26,10 +26,10 @@ class _ChangePaswordPageState extends State<ChangePaswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 104, 26, 26),
+        //backgroundColor: const Color.fromARGB(255, 104, 26, 26),
         title: const Text("change password"),
       ),
-      backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+      //backgroundColor: const Color.fromARGB(255, 49, 49, 49),
       body: Center(
         child: ListView(
           children: [

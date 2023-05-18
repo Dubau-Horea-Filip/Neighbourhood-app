@@ -14,6 +14,8 @@ public interface FrindRepo extends Neo4jRepository<Friend,Long> {
 
     Optional<Friend> findByEmail(String email);
 
+    @Query("MATCH (:Friend {email: $userEmail})-[:FRIEND]->(f:Friend) RETURN f")
+    List<Friend> findFriendsByEmail(@Param("userEmail") String userEmail);
 
 
     @Query("MATCH (f:Friend)-[:FRIEND]->(friend:Friend) RETURN friend")
@@ -49,5 +51,7 @@ public interface FrindRepo extends Neo4jRepository<Friend,Long> {
     @Query("MATCH (f1:Friend)-[:FRIEND]-(f2:Friend) WHERE id(f1) = $friend1Id AND id(f2) = $friend2Id RETURN COUNT(*) > 0")
     boolean checkFriendshipById(@Param("friend1Id") Long friend1Id, @Param("friend2Id") Long friend2Id); // chack if there is already an frindship
 
+    @Query("MATCH (f1:Friend)-[:FRIEND]-(f2:Friend) WHERE f1.email = $friend1Email AND f2.email = $friend2Email RETURN COUNT(*) > 0")
+    boolean checkFriendshipByEmail(@Param("friend1Email") String friend1Email, @Param("friend2Email") String friend2Email);
 
 }

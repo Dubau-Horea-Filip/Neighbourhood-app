@@ -53,19 +53,19 @@ public class GraphNApplication implements CommandLineRunner {
 //
 //	}
 //
-//	public void seeall() {
-//
-//		System.out.println("Friends:");
-//		for (Friend friend : friendsRepo.findAll()) {
-//			System.out.println(friend);
-//		}
-//
-//		System.out.println("Group:");
-//		for (Group friend : groupRepo.findAll()) {
-//			System.out.println(friend);
-//		}
-//	}
-//
+	public void seeall() {
+
+		System.out.println("Friends:");
+		for (Friend friend : friendsRepo.findAll()) {
+			System.out.println(friend);
+		}
+
+		System.out.println("Group:");
+		for (Group friend : groupRepo.findAll()) {
+			System.out.println(friend);
+		}
+	}
+
 //	private void addGrops() {
 //		Group newGroup = groupRepo.addGroup("Cluj-Napoca, Romania", "Gheorgheni");
 //		System.out.println(newGroup);
@@ -101,7 +101,7 @@ public class GraphNApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		//addGrops();
 		//addUser();
-		//seeall();
+		seeall();
 	}
 
 

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:neighborhood_app/Pages/empty_page.dart';
+import 'package:neighborhood_app/Pages/friends.dart';
 import 'package:neighborhood_app/Pages/logging_screen.dart';
 import 'package:neighborhood_app/Pages/profile_page.dart';
 
@@ -29,8 +30,8 @@ class NavBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.today),
-            title: const Text('Make Conections'),
+            leading: const Icon(Icons.group),
+            title: const Text('Groups'),
             onTap: () => {
               Navigator.push(
                   context,
@@ -41,15 +42,19 @@ class NavBar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.timeline),
-            title: const Text('My groups'),
+            leading: const Icon(Icons.connect_without_contact_sharp),
+            title: const Text('Make conections'),
             onTap: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => EMptyPage()))
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => AddFriends(
+                            user: user,
+                          )))
             },
           ),
           ListTile(
-            leading: const Icon(Icons.timeline),
+            leading: const Icon(Icons.edit),
             title: const Text('My profile Eddit'),
             onTap: () => {
               Navigator.push(context,
