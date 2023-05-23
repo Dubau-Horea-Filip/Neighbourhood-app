@@ -37,13 +37,14 @@ class _MainPageState extends State<MainPage> {
         actions: [
           IconButton(
             splashRadius: 25,
-            icon: const CircleAvatar(
+            icon: CircleAvatar(
               minRadius: 25,
+              backgroundImage: NetworkImage(widget.user.pictureurl),
               // foregroundImage: Image.asset(
               //   'assets/Krunal.jpg',
               // ),
               // backgroundImage: Image.asset('assets/profile.png'),
-              child: Text("profile"),
+              child: const Text("profile"),
             ),
             onPressed: () {
               Navigator.push(

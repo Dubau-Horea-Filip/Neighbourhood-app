@@ -15,21 +15,6 @@ public interface GroupRepo extends Neo4jRepository<Group,Long> {
 
 
 
-//    @Query("MATCH (g:Group) WHERE id(g) = $groupId RETURN g")
-//    Optional<Group> findById(@Param("groupId") Long groupId);
-
-
-
-//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f")
-//    List<Friend> findUsersInGroup(@Param("groupName") String groupName);
-//
-//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f.name, f.email, f.password, f.about, f.groupList, f.friends")
-//    List<Friend> findFriendsInGroup(@Param("groupName") String groupName);
-
-
-//    @Query("MATCH (:Group {groupName: $groupName})<-[:GROUP]-(:Friend)-[:FRIEND]->(f:Friend) RETURN DISTINCT f.name AS name, f.email AS email, f.password AS password, f.about AS about, f.groupList AS groupList, f.friends AS friends")
-//    List<Map<String, Object>> findFriendsInGroupdata(@Param("groupName") String groupName);
-
 
 
 
@@ -55,14 +40,15 @@ public interface GroupRepo extends Neo4jRepository<Group,Long> {
     void removeGroupDependency(@Param("groupName") String groupName, @Param("friendEmail") String friendEmail);
 
 
-//    @Query("MATCH (f1:Friend {name: $friend1Name}), (f2:Friend {name: $friend2Name}) " +
-//            "WHERE NOT EXISTS((f1)-[:FRIEND]-(f2)) " +
-//            "CREATE (f1)-[:FRIEND]->(f2), (f2)-[:FRIEND]->(f1)")
-//    void addFriendship(@Param("friend1Name") String friend1Name, @Param("friend2Name") String friend2Name); //add frind dependency
 
     @Query("MATCH (g:Group {id: $groupId}), (f:Friend {id: $friendId}) RETURN EXISTS((f)-[:GROUP]->(g))")
     boolean checkGroupMembership(@Param("groupId") Long groupId, @Param("friendId") Long friendId);
 
+//    @Query("MATCH (g:Group {groupName: $groupName})<-[:GROUP]-(f:Friend {email: $friendEmail}) RETURN EXISTS((f)-[:GROUP]->(g))")
+//    boolean checkGroupMembership(@Param("groupName") String groupName, @Param("friendEmail") String friendEmail);
+
+    @Query("MATCH (g:Group {groupName: $groupName})<-[:GROUP]-(f:Friend {email: $friendEmail}) RETURN EXISTS((f)-[:GROUP]->(g))")
+    Boolean checkGroupMembership(@Param("groupName") String groupName, @Param("friendEmail") String friendEmail);
 
 
 
