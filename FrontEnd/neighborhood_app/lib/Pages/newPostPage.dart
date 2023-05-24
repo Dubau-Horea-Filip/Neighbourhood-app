@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Model/Post.dart';
 import '../Model/User.dart';
 import '../Widgets/button.dart';
 import '../Widgets/textfield_widget.dart';

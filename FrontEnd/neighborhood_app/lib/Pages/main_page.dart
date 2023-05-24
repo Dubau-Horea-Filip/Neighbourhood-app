@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:neighborhood_app/Pages/empty_page.dart';
 import '../Model/Post.dart';
 import '../Model/User.dart';
 import '../Widgets/NavBar.dart';
-import '../Widgets/list_of_frinds_from_user.dart';
 import '../Widgets/postwidget.dart';
 import '../new/profile.dart';
 import 'newPostPage.dart';
@@ -118,7 +115,7 @@ class _MainPageState extends State<MainPage> {
       final List<dynamic>? groupData =
           await getUserGroupsByGroupName(groupName);
 
-      if (groupData != null && groupData is List<dynamic>) {
+      if (groupData != null) {
         final List<Post> groupPosts = groupData
             .map((json) => Post.fromJson(json as Map<String, dynamic>))
             .toList();
@@ -132,7 +129,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<List<dynamic>?> getUserGroupsByGroupName(String groupname) async {
-    const url = 'http://localhost:8080/api/post/posts';
+    const url = 'http://localhost:8080/api/post/posts_group';
     final uri =
         Uri.parse(url).replace(queryParameters: {'groupName': groupname});
     final response = await http.get(uri);

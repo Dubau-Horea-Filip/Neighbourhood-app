@@ -27,4 +27,45 @@ public interface PostsRepo extends Neo4jRepository<Post,Long> {
     @Query("MATCH (p:Post)-[:POSTED_IN]->(g:Group {groupName: $groupName}) RETURN p")
     List<Post> findPostsByGroupName(@Param("groupName") String groupName);
 
+
+    @Query("MATCH (p:Post)-[r:CREATED_BY]->(f:Friend {email: $email})-[:POSTED_IN]->(g:Group {groupName: $groupName}) " +
+            "WHERE p.post = $postContent " +
+            "RETURN p")
+    Post findPostByGroupEmailAndContent(@Param("groupName") String groupName,
+                                        @Param("email") String email,
+                                        @Param("postContent") String postContent);
+
+    @Query("MATCH (p:Post)-[r:CREATED_BY]->(f:Friend {email: $email})-[:POSTED_IN]->(g:Group {groupName: $groupName}) " +
+            "WHERE p.post = $postContent " +
+            "RETURN COUNT(p) > 0")
+    boolean existsPostByGroupEmailAndContent(@Param("groupName") String groupName,
+                                             @Param("email") String email,
+                                             @Param("postContent") String postContent);
+
+
+
+
+    @Query("MATCH (p:Post)-[r:CREATED_BY]->(f:Friend {email: $email})-[:POSTED_IN]->(g:Group {groupName: $groupName}) " +
+            "WHERE p.post = $postContent " +
+            "DELETE p, r")
+    void deletePostByGroupEmailAndContent(@Param("groupName") String groupName,
+                                          @Param("email") String email,
+                                          @Param("postContent") String postContent);
+
+    @Query( "MATCH (f:Friend {email: $email}) " +
+            "MATCH (g:Group {groupName: $groupName})"+
+            "MATCH (g)-[:POSTED_IN]-(p:Post)-[:CREATED_BY]->(f) " +
+            "WHERE p.post = $postContent " +
+            "WITH p, g, f " +
+            "LIMIT 1 " +
+            "DETACH DELETE p " +
+            "RETURN COUNT(p) > 0")
+    boolean deletePostByGroupEmailAndContentIfExists(@Param("groupName") String groupName,
+                                                     @Param("email") String email,
+                                                     @Param("postContent") String postContent);
+
+
+
+
+
 }
