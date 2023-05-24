@@ -37,10 +37,10 @@ class _TextFieldWidgetControllerState extends State<TextFieldWidgetController> {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
+          // Text(
+          //   widget.label,
+          //   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          // ),
           const SizedBox(height: 8),
           TextField(
             controller: widget.controller,

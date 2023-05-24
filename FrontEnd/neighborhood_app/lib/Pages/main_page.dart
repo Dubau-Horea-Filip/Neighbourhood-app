@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:neighborhood_app/Pages/profile_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:neighborhood_app/Pages/empty_page.dart';
+import '../Model/Post.dart';
 import '../Model/User.dart';
 import '../Widgets/NavBar.dart';
 import '../Widgets/list_of_frinds_from_user.dart';
+import '../Widgets/postwidget.dart';
 import '../new/profile.dart';
+import 'newPostPage.dart';
 
 class MainPage extends StatefulWidget {
   final User user;
@@ -19,11 +22,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late List<User> users = [];
+  late List<Post> posts = [];
 
   @override
   void initState() {
     super.initState();
     populateUsersFromFriends();
+    populatePostsForCurrentUser();
   }
 
   @override
@@ -57,9 +62,24 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: users.isEmpty
+      body: posts.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : UserListWidget(users: users),
+          : PostListWidget(posts: posts),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => NewPostPage(
+                        user: widget.user,
+                      )));
+          await populatePostsForCurrentUser();
+          setState(() {}); // Trigger a rebuild of the MainPage
+        },
+        tooltip: "add",
+        child: const Icon(Icons.add),
+      ),
+
       //backgroundColor: const Color.fromARGB(255, 49, 49, 49)
     );
   }
@@ -82,6 +102,39 @@ class _MainPageState extends State<MainPage> {
   Future<Map<String, dynamic>?> getUserDataByEmail(String email) async {
     const url = 'http://localhost:8080/api/friends/userL';
     final uri = Uri.parse(url).replace(queryParameters: {'UserEmail': email});
+    final response = await http.get(uri);
+    final body = response.body;
+    if (body.isNotEmpty && response.statusCode == 200) {
+      final parsedJson = json.decode(body);
+      return parsedJson;
+    }
+    return null;
+  }
+
+  Future<void> populatePostsForCurrentUser() async {
+    final List<Post> updatedPosts = [];
+
+    for (final groupName in widget.user.groups) {
+      final List<dynamic>? groupData =
+          await getUserGroupsByGroupName(groupName);
+
+      if (groupData != null && groupData is List<dynamic>) {
+        final List<Post> groupPosts = groupData
+            .map((json) => Post.fromJson(json as Map<String, dynamic>))
+            .toList();
+        updatedPosts.addAll(groupPosts);
+      }
+    }
+
+    setState(() {
+      posts = updatedPosts;
+    });
+  }
+
+  Future<List<dynamic>?> getUserGroupsByGroupName(String groupname) async {
+    const url = 'http://localhost:8080/api/post/posts';
+    final uri =
+        Uri.parse(url).replace(queryParameters: {'groupName': groupname});
     final response = await http.get(uri);
     final body = response.body;
     if (body.isNotEmpty && response.statusCode == 200) {

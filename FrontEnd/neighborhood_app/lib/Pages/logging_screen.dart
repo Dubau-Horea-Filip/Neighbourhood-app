@@ -57,8 +57,8 @@ class _LoggingPageState extends State<LoggingPage> {
       //backgroundColor: Color.fromARGB(255, 231, 255, 239),
       body: Center(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 32),
-          physics: BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          physics: const BouncingScrollPhysics(),
           children: [
             const SizedBox(height: 24),
             TextFieldWidgetController(

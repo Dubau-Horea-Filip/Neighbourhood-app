@@ -178,6 +178,43 @@ public class FriendController {
         return ResponseEntity.ok("User updated successfully.");
     }
 
+//    @GetMapping("/potential-friends")
+//    public ResponseEntity<List<Friend>> getPotentialFriends(@RequestParam("userEmail") String userEmail) {
+//        Friend user = friendRepository.findByEmail(userEmail).orElse(null);
+//        if (user != null) {
+//            Set<Friend> potentialFriends = new HashSet<>();
+//
+//            for (Friend friend : user.getFriends()) {
+//                List<Friend> mutualFriends = friendRepository.findFriendsByEmail(friend.getEmail());
+//                for (Friend friend2 : mutualFriends) {
+//                    if (!friend2.getEmail().equals(userEmail)) {
+//                        potentialFriends.add(friend2);
+//                    }
+//                }
+//            }
+//
+//            // Add friends from the same groups as the user
+//            List<Group> userGroups = groupRepo.findUserGroups(userEmail);
+//            System.out.println("User  grops: " + userGroups);
+//            for (Group group : userGroups) {
+//                List<String> groupMembers = groupRepo.findNonFriendUserEmailsInGroup(group.getGroupName(), userEmail);
+//
+//                for (String friend2 : groupMembers) {
+//
+//
+//                    if (!userEmail.equals(friend2)) {
+//                        friendRepository.findByEmail(friend2).ifPresent(potentialFriends::add);
+//                    }
+//                }
+//            }
+//
+//
+//            return ResponseEntity.ok(new ArrayList<>(potentialFriends));
+//        }
+//
+//        return null;
+//    }
+
     @GetMapping("/potential-friends")
     public ResponseEntity<List<Friend>> getPotentialFriends(@RequestParam("userEmail") String userEmail) {
         Friend user = friendRepository.findByEmail(userEmail).orElse(null);
@@ -187,7 +224,7 @@ public class FriendController {
             for (Friend friend : user.getFriends()) {
                 List<Friend> mutualFriends = friendRepository.findFriendsByEmail(friend.getEmail());
                 for (Friend friend2 : mutualFriends) {
-                    if (!friend2.getEmail().equals(userEmail)) {
+                    if (!friend2.getEmail().equals(userEmail) && !user.getFriends().contains(friend2)) {
                         potentialFriends.add(friend2);
                     }
                 }
@@ -195,24 +232,22 @@ public class FriendController {
 
             // Add friends from the same groups as the user
             List<Group> userGroups = groupRepo.findUserGroups(userEmail);
-            System.out.println("User  grops: " + userGroups);
+            System.out.println("User groups: " + userGroups);
             for (Group group : userGroups) {
                 List<String> groupMembers = groupRepo.findNonFriendUserEmailsInGroup(group.getGroupName(), userEmail);
 
                 for (String friend2 : groupMembers) {
-
-
-                    if (!userEmail.equals(friend2)) {
+                    if (!userEmail.equals(friend2) && !user.getFriends().contains(friend2)) {
                         friendRepository.findByEmail(friend2).ifPresent(potentialFriends::add);
                     }
                 }
             }
 
-
             return ResponseEntity.ok(new ArrayList<>(potentialFriends));
         }
 
-        return null;
+        return ResponseEntity.notFound().build();
     }
+
 
 }

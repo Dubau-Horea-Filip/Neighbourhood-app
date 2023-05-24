@@ -14,7 +14,12 @@ public class Post {
     @GeneratedValue
     private Long id;
 
+    @Relationship(type = "CREATED_BY", direction = Relationship.Direction.OUTGOING)
     private Friend user;
+
+    @Relationship(type = "POSTED_IN", direction = Relationship.Direction.OUTGOING)
+    private Group group;
+    private String post;
 
     public Group getGroup() {
         return group;
@@ -24,8 +29,7 @@ public class Post {
         this.group = group;
     }
 
-    private Group group;
-    private String post;
+
 
     @Relationship(type = "COMMENT", direction = Relationship.Direction.INCOMING)
     private List<Comment> comments;

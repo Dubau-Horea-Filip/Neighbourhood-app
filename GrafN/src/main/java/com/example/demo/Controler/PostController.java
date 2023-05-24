@@ -13,11 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
 
-private final GroupRepo groupRepo;
+    private final GroupRepo groupRepo;
 
     private final PostsRepo postsRepo;
     private final FrindRepo frindRepo;
@@ -28,6 +31,36 @@ private final GroupRepo groupRepo;
         this.postsRepo = postsRepo;
         this.frindRepo = frindRepo;
     }
+
+    @GetMapping("/all-posts") // returns all the post from the database in Json format
+    public List<PostJson> getAllPosts() {
+        List<Post> posts = postsRepo.findAll();
+        List<PostJson> postJsonList = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost());
+            postJsonList.add(postJson);
+        }
+
+        return postJsonList;
+    }
+
+    @GetMapping("/posts")
+    public List<PostJson> getPosts(@RequestParam("groupName") String groupName) {
+        List<Post> posts = postsRepo.findAll();
+        List<PostJson> postJsonList = new ArrayList<>();
+
+        for (Post post : posts) {
+            if (post.getGroup() != null && post.getGroup().getGroupName().equals(groupName)) {
+                PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost());
+                postJsonList.add(postJson);
+            }
+        }
+
+        return postJsonList;
+    }
+
+
 
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody PostJson post) {
@@ -54,9 +87,8 @@ private final GroupRepo groupRepo;
             // Perform the desired logic when the membership is true
 
 
-
             // Create the post
-            Post createdPost = postsRepo.makePost(postContent,friendEmail, groupName);
+            Post createdPost = postsRepo.makePost(postContent, friendEmail, groupName);
             if (createdPost != null) {
                 return ResponseEntity.status(HttpStatus.OK).body("Post created successfully.");
             } else {
@@ -66,6 +98,7 @@ private final GroupRepo groupRepo;
             return ResponseEntity.badRequest().body("Friend is not a member of the group.");
         }
     }
+
     @DeleteMapping("/remove-post")
     public ResponseEntity<String> removePost(@RequestParam("postId") Long postId) {
         boolean postExists = postsRepo.existsById(postId);
@@ -77,8 +110,6 @@ private final GroupRepo groupRepo;
             return ResponseEntity.badRequest().body("Post not found");
         }
     }
-
-
 
 
 }
