@@ -16,7 +16,11 @@ public class Comment {
     private Long id;
 
   private String  comment;
-  private String user;
+  @Relationship(type = "COMMENT_BY", direction = Relationship.Direction.OUTGOING)
+  private Friend user;
+
+  @Relationship(type = "COMMENT_IN", direction = Relationship.Direction.OUTGOING)
+  private Post post;
 
     public String getComment() {
         return comment;
@@ -26,11 +30,19 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getUser() {
+    public Friend getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(Friend user) {
         this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

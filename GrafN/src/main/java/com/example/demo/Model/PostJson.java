@@ -5,7 +5,7 @@ public class PostJson {
     private String group;
     private String post;
 
-    // Constructors, getters, and setters
+
 
     public PostJson() {
     }

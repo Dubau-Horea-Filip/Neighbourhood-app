@@ -45,12 +45,7 @@ public interface PostsRepo extends Neo4jRepository<Post,Long> {
 
 
 
-    @Query("MATCH (p:Post)-[r:CREATED_BY]->(f:Friend {email: $email})-[:POSTED_IN]->(g:Group {groupName: $groupName}) " +
-            "WHERE p.post = $postContent " +
-            "DELETE p, r")
-    void deletePostByGroupEmailAndContent(@Param("groupName") String groupName,
-                                          @Param("email") String email,
-                                          @Param("postContent") String postContent);
+
 
     @Query( "MATCH (f:Friend {email: $email}) " +
             "MATCH (g:Group {groupName: $groupName})"+
@@ -63,9 +58,6 @@ public interface PostsRepo extends Neo4jRepository<Post,Long> {
     boolean deletePostByGroupEmailAndContentIfExists(@Param("groupName") String groupName,
                                                      @Param("email") String email,
                                                      @Param("postContent") String postContent);
-
-
-
 
 
 }
