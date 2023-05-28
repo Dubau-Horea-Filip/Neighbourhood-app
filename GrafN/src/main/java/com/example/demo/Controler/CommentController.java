@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +33,44 @@ public class CommentController {
         this.frindRepo = frindRepo;
         this.commentRepo = commentRepo;
     }
+
+    @GetMapping
+    public ResponseEntity<List<Comment>> getAllComments() {
+        List<CommentJson> commentJsonList = new ArrayList<>();
+        List<Comment> comments = commentRepo.findAll();
+        for (Comment comment : comments) {
+            CommentJson commentJson = new CommentJson();
+
+            commentJson.setId(String.valueOf(comment.getId()));
+            commentJson.setComment(comment.getComment());
+            commentJson.setPostId(comment.getPost().getid());
+            commentJson.setEmail(comment.getUser().getEmail());
+
+            commentJsonList.add(commentJson);
+        }
+
+        return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/comments")
+    public List<CommentJson> getComments(@RequestParam("postId") Long postId) {
+        List<Comment> comments = commentRepo.findAll();
+        List<CommentJson> commentJsonList = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentJson commentJson = new CommentJson();
+
+            commentJson.setId(String.valueOf(comment.getId()));
+            commentJson.setComment(comment.getComment());
+            commentJson.setPostId(comment.getPost().getid());
+            commentJson.setEmail(comment.getUser().getEmail());
+          if(commentJson.getPostId()==postId)
+            commentJsonList.add(commentJson);
+        }
+
+        return commentJsonList;
+    }
+
+
 
     @PostMapping("/make-comm")
     public ResponseEntity<String> createComment(@RequestBody CommentJson com) {

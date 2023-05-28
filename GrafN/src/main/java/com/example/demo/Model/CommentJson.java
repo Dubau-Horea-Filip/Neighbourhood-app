@@ -6,6 +6,20 @@ public class CommentJson {
     private Long postId;
     private String comment;
 
+    private String id;
+
+    public CommentJson() {
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public Long getPostId() {
         return postId;
     }

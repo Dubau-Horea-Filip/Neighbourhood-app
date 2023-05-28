@@ -7,6 +7,8 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface CommentRepo extends Neo4jRepository<Comment,Long> {
 
 
@@ -20,5 +22,10 @@ public interface CommentRepo extends Neo4jRepository<Comment,Long> {
 
     @Query("MATCH (c:Comment) WHERE id(c) = $commentId DETACH DELETE c")
     void deleteCommentById(@Param("commentId") Long commentId);
+
+    @Query("MATCH (p:Post)-[:COMMENT_IN]->(c:Comment)\n" +
+            "WHERE p.id = $postId\n" +
+            "RETURN c\n")
+    List<Comment> findCommentsByPostId(@Param("postId") Long postId);
 
 }

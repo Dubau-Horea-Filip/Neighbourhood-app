@@ -38,7 +38,7 @@ public class PostController {
         List<PostJson> postJsonList = new ArrayList<>();
 
         for (Post post : posts) {
-            PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost());
+            PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost(),post.getid());
             postJsonList.add(postJson);
         }
 
@@ -52,7 +52,7 @@ public class PostController {
 
         for (Post post : posts) {
             if (post.getGroup() != null && post.getGroup().getGroupName().equals(groupName)) {
-                PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost());
+                PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost(),post.getid());
                 postJsonList.add(postJson);
             }
         }
@@ -67,7 +67,7 @@ public class PostController {
 
         for (Post post : posts) {
             if (post.getGroup() != null && post.getUser().getEmail().equals(email)) {
-                PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost());
+                PostJson postJson = new PostJson(post.getUser().getEmail(), post.getGroup().getGroupName(), post.getPost(), post.getid());
                 postJsonList.add(postJson);
             }
         }
