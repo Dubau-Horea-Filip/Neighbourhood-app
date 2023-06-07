@@ -6,22 +6,22 @@ public class PostJson {
     private String post;
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    private Long id;
+    private String id;
 
 
 
     public PostJson() {
     }
 
-    public PostJson(String email, String group, String post,  Long getid) {
+    public PostJson(String email, String group, String post,  String getid) {
         this.email = email;
         this.group = group;
         this.post = post;

@@ -2,11 +2,13 @@ class Group {
   String name;
   String location;
   int numberOfCommonFriends;
+  int id;
   
   Group({
     required this.name,
     required this.location,
     required this.numberOfCommonFriends,
+    required this.id
   });
   
   @override
@@ -19,6 +21,7 @@ class Group {
       name: json['name'],
       location: json['location'],
       numberOfCommonFriends: json['numberOfCommonFriends'],
+       id: json['id']
     );
   }
   

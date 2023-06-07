@@ -3,7 +3,7 @@ package com.example.demo.Model;
 public class CommentJson {
 
     private String email;
-    private Long postId;
+    private String postId;
     private String comment;
 
     private String id;
@@ -20,15 +20,15 @@ public class CommentJson {
         this.id = id;
     }
 
-    public Long getPostId() {
+    public String getPostId() {
         return postId;
     }
 
-    public void setPostId(Long postId) {
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 
-    public CommentJson(String email, long group, String comment) {
+    public CommentJson(String email, String group, String comment) {
         this.email = email;
         this.postId = group;
         this.comment = comment;

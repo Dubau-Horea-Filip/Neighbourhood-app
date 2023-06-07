@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../Model/Post.dart';
 import '../Model/User.dart';
 import '../Widgets/NavBar.dart';
-import '../Widgets/postwidget.dart';
+import '../Widgets/post_list_widget.dart';
 import '../new/profile.dart';
 import 'newPostPage.dart';
 
@@ -39,14 +39,14 @@ class _MainPageState extends State<MainPage> {
         actions: [
           IconButton(
             splashRadius: 25,
-            icon: CircleAvatar(
+            icon: const CircleAvatar(
               minRadius: 25,
-              backgroundImage: NetworkImage(widget.user.pictureurl),
+              //backgroundImage: NetworkImage(widget.user.pictureurl),
               // foregroundImage: Image.asset(
               //   'assets/Krunal.jpg',
               // ),
               // backgroundImage: Image.asset('assets/profile.png'),
-              child: const Text("profile"),
+              child: Text("profile"),
             ),
             onPressed: () {
               Navigator.push(
@@ -61,7 +61,10 @@ class _MainPageState extends State<MainPage> {
       ),
       body: posts.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : PostListWidget(posts: posts),
+          : PostListWidget(
+              posts: posts,
+              user: widget.user,
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.push(

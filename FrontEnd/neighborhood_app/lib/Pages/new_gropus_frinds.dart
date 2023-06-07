@@ -113,6 +113,8 @@ class _AddGroupsAddFrindsState extends State<AddGroupsAddFrinds> {
           name: groupData['groupName'] ?? '',
           location: groupData['location'] ?? '',
           numberOfCommonFriends: groupData['numCommonFriends'] ?? 0,
+           id: groupData['id'] ?? 0,
+
         );
         groups.add(group);
       }
@@ -191,6 +193,7 @@ class _AddGroupsAddFrindsState extends State<AddGroupsAddFrinds> {
           name: groupData['groupName'] ?? '',
           location: groupData['location'] ?? '',
           numberOfCommonFriends: groupData['numCommonFriends'] ?? 0,
+           id: groupData['id'] ?? 0,
         );
         groups.add(group);
       }

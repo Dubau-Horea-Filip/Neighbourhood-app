@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -43,7 +44,7 @@ public class CommentController {
 
             commentJson.setId(String.valueOf(comment.getId()));
             commentJson.setComment(comment.getComment());
-            commentJson.setPostId(comment.getPost().getid());
+            commentJson.setPostId(comment.getPost().getid().toString());
             commentJson.setEmail(comment.getUser().getEmail());
 
             commentJsonList.add(commentJson);
@@ -61,9 +62,9 @@ public class CommentController {
 
             commentJson.setId(String.valueOf(comment.getId()));
             commentJson.setComment(comment.getComment());
-            commentJson.setPostId(comment.getPost().getid());
+            commentJson.setPostId(comment.getPost().getid().toString());
             commentJson.setEmail(comment.getUser().getEmail());
-          if(commentJson.getPostId()==postId)
+          if(Objects.equals(commentJson.getPostId(), postId.toString()))
             commentJsonList.add(commentJson);
         }
 
@@ -76,9 +77,9 @@ public class CommentController {
     public ResponseEntity<String> createComment(@RequestBody CommentJson com) {
         String commentContent = com.getComment();
         String friendEmail = com.getEmail();
-        Long postId = com.getPostId();
+        String postId = com.getPostId();
 
-        Post post = postsRepo.findById(postId).orElse(null);
+        Post post = postsRepo.findById(Long.valueOf(postId)).orElse(null);
         Friend friend = frindRepo.findByEmail(friendEmail).orElse(null);
 
         if (post == null && friend == null) {
