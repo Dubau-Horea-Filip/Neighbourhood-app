@@ -47,8 +47,6 @@ class _PostWidgetState extends State<PostWidget> {
     } else {
       throw Exception('Failed to fetch comments');
     }
-
-    print(response.body);
   }
 
   @override
@@ -60,18 +58,18 @@ class _PostWidgetState extends State<PostWidget> {
             Expanded(
               child: ListTile(
                 title: Text(
-                  widget.post.group,
+                  widget.post.post_content,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: Colors.black,
+                    color: Colors.green,
                   ),
                 ),
                 subtitle: Text(
-                  widget.post.post_content,
+                  "Group: ${widget.post.group}\nUser: ${widget.post.email}",
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -80,7 +78,7 @@ class _PostWidgetState extends State<PostWidget> {
               onPressed: () async {
                 await navigateToNewCommentPage();
               },
-              icon: Icon(Icons.comment),
+              icon: const Icon(Icons.comment),
             ),
           ],
         ),
@@ -96,26 +94,51 @@ class _PostWidgetState extends State<PostWidget> {
                       comment.user_email == widget.user.email;
 
                   return ListTile(
-                    title: GestureDetector(
-                      onLongPress: () {
-                        if (isCurrentUserComment) {
-                          showDeleteCommentDialog(comment);
-                        }
-                      },
-                      child: Text(
-                        comment.comment,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.blue,
+                    onLongPress: () {
+                      if (isCurrentUserComment) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text('Delete Comment'),
+                            content: const Text(
+                                'Are you sure you want to delete this comment?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  deleteComment(comment);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    tileColor: Colors.grey,
+                    title: Row(
+                      children: [
+                        Text(
+                          comment.comment,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.greenAccent,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     subtitle: Text(
                       "User: ${comment.user_email}",
                       style: const TextStyle(
                         fontSize: 12,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ),
                     ),
                   );
@@ -140,38 +163,65 @@ class _PostWidgetState extends State<PostWidget> {
     await fetchComments(widget.post.postId);
   }
 
-  Future<void> showDeleteCommentDialog(Comment comment) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Comment'),
-          content: Text('Are you sure you want to delete this comment?'),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Delete'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                deleteComment(comment);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> showDeleteCommentDialog(Comment comment) async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Delete Comment'),
+  //         content:const  Text('Are you sure you want to delete this comment?'),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text('Cancel'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: const Text('Delete'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               deleteComment(comment);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<void> deleteComment(Comment comment) async {
-    // Make an API call to delete the comment using comment.commentId or any relevant identifier
-    // Example: Send an HTTP DELETE request to the API endpoint with comment.commentId
+    const url = '${apiBaseUrl}api/comment/remove-comment';
+    final id = comment.id;
 
-    // Refresh comments after deleting the comment
-    await fetchComments(widget.post.postId);
+    final headers = {'Content-Type': 'application/json'};
+    final body = json.encode({'id': id});
+
+    final request = http.Request('DELETE', Uri.parse(url));
+    request.headers.addAll(headers);
+    request.body = body;
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      // Comment deleted successfully
+      showDialog(
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Text('Comment deleted successfully.'),
+        ),
+      );
+
+      // Refresh comments after deleting
+      await fetchComments(widget.post.postId);
+    } else {
+      // Failed to delete comment
+      showDialog(
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Text('Failed to delete comment.'),
+        ),
+      );
+    }
   }
 }

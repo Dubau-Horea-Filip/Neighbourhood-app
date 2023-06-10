@@ -46,11 +46,13 @@ class _NewPostPageState extends State<NewPostPage> {
             TextFieldWidgetController(
               controller: groupController,
               label: 'Group',
+              isVisible: true,
             ),
             const SizedBox(height: 16.0),
             TextFieldWidgetController(
               controller: postContentController,
               label: 'Post Content',
+              isVisible: true,
             ),
             const SizedBox(height: 26.0),
             ButtonWidget(

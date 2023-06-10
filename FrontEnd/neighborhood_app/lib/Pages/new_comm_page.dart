@@ -46,6 +46,7 @@ class _NewCommPageState extends State<NewCommPage> {
             TextFieldWidgetController(
               controller: commentController,
               label: 'Comment',
+              isVisible: true,
             ),
             const SizedBox(height: 26.0),
             ButtonWidget(

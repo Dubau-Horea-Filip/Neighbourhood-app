@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TextFieldWidgetController extends StatefulWidget {
   final int maxLines;
   final String label;
-
+  final bool isVisible;
   final TextEditingController controller;
 
   const TextFieldWidgetController({
@@ -11,6 +11,8 @@ class TextFieldWidgetController extends StatefulWidget {
     this.maxLines = 1,
     required this.label,
     required this.controller,
+    required this.isVisible,
+    
   }) : super(key: key);
 
   @override
@@ -19,20 +21,6 @@ class TextFieldWidgetController extends StatefulWidget {
 }
 
 class _TextFieldWidgetControllerState extends State<TextFieldWidgetController> {
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   controller = TextEditingController(text: widget.label);
-  // }
-
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +32,9 @@ class _TextFieldWidgetControllerState extends State<TextFieldWidgetController> {
           const SizedBox(height: 8),
           TextField(
             controller: widget.controller,
+            obscureText: !widget.isVisible,
+            enableSuggestions: false,
+            autocorrect: false,
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

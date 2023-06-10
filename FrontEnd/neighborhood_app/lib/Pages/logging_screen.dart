@@ -62,10 +62,16 @@ class _LoggingPageState extends State<LoggingPage> {
           children: [
             const SizedBox(height: 24),
             TextFieldWidgetController(
-                label: 'Email', controller: controllerName),
+              label: 'Email',
+              controller: controllerName,
+              isVisible: true,
+            ),
             const SizedBox(height: 24),
             TextFieldWidgetController(
-                label: 'Password', controller: controllerPassword),
+              label: 'Password',
+              controller: controllerPassword,
+              isVisible: false,
+            ),
             const SizedBox(height: 24),
             ButtonWidget(
               onClicked: () {
