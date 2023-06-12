@@ -1,6 +1,7 @@
 class Friend {
   String name;
   String email;
+  
 
   @override
   String toString() {

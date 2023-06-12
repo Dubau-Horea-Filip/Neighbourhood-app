@@ -61,4 +61,8 @@ public class Post {
     public Long getid() {
         return id;
     }
+
+    public Long recieveTheidentity() {
+        return this.id;
+    }
 }

@@ -6,7 +6,17 @@ public class FriendJson {
     private String name;
     private String email;
 
+    private String about;
+
     private String password;
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
 
     private List<String> frinds_emails;
     private List<String> groupsName;
@@ -41,9 +51,10 @@ public class FriendJson {
 
 
 
-    public FriendJson(String name, String email) {
+    public FriendJson(String name, String email, String about) {
         this.name = name;
         this.email = email;
+        this.about = about;
     }
 
     public String getName() {

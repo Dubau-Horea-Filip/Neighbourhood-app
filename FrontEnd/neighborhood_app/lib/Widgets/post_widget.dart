@@ -82,68 +82,66 @@ class _PostWidgetState extends State<PostWidget> {
             ),
           ],
         ),
-        (comments.isEmpty)
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: comments.length,
-                itemBuilder: (context, index) {
-                  final comment = comments[index];
-                  final bool isCurrentUserComment =
-                      comment.user_email == widget.user.email;
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: comments.length,
+          itemBuilder: (context, index) {
+            final comment = comments[index];
+            final bool isCurrentUserComment =
+                comment.user_email == widget.user.email;
 
-                  return ListTile(
-                    onLongPress: () {
-                      if (isCurrentUserComment) {
-                        showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                            title: const Text('Delete Comment'),
-                            content: const Text(
-                                'Are you sure you want to delete this comment?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  deleteComment(comment);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Delete'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                    tileColor: Colors.grey,
-                    title: Row(
-                      children: [
-                        Text(
-                          comment.comment,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.greenAccent,
-                          ),
+            return ListTile(
+              onLongPress: () {
+                if (isCurrentUserComment) {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text('Delete Comment'),
+                      content: const Text(
+                          'Are you sure you want to delete this comment?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            deleteComment(comment);
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Delete'),
                         ),
                       ],
                     ),
-                    subtitle: Text(
-                      "User: ${comment.user_email}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                    ),
                   );
-                },
+                }
+              },
+              tileColor: Color.fromARGB(76, 9, 83, 16),
+              title: Row(
+                children: [
+                  Text(
+                    comment.comment,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
               ),
+              subtitle: Text(
+                "User: ${comment.user_email}",
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+            );
+          },
+        ),
       ],
     );
   }

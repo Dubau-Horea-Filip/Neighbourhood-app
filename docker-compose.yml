@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   neo4j:
-    image: neo4j:latest
+    image: neo4j
     hostname: neo4j
     environment:
       - NEO4J_AUTH=neo4j/password

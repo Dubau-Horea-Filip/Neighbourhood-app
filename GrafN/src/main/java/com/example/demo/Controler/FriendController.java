@@ -59,13 +59,15 @@ public class FriendController {
             userJ.setName(user.getName());
             userJ.setFrinds_emails(user.getFriendEmails());
             userJ.setGroupsName(user.getGroupNames());
+            userJ.setAbout(user.getAbout());
+            userJ.setPassword(user.getPassword());
             return userJ;
         }
 
         return null;
     }
 
-    @GetMapping("/userL") // get information about current user
+    @GetMapping("/userL") // get information about current user without needeeng the password
     public FriendJson getUserIfCredentials(@RequestParam("UserEmail") String UserEmail) {
 
         Friend user = friendRepository.findByEmail(UserEmail).orElse(null);
@@ -76,6 +78,7 @@ public class FriendController {
             userJ.setName(user.getName());
             //userJ.setFrinds_emails(user.getFriendEmails());
             userJ.setGroupsName(user.getGroupNames());
+            userJ.setAbout(user.getAbout());
             return userJ;
         }
 

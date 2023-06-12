@@ -89,6 +89,7 @@ class _LoggingPageState extends State<LoggingPage> {
                 String pass = controllerPassword.text;
                 if (name.isNotEmpty && pass.isNotEmpty) {
                   if (await checkCredentials(name, pass)) {
+                    user.password = pass;
                     Navigator.push(
                         context,
                         MaterialPageRoute(

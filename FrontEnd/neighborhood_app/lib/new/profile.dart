@@ -20,11 +20,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late User useru;
   String url =
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
   List<Post> userPosts = [];
   @override
   void initState() {
+    useru = widget.user;
+    updateUser();
     super.initState();
     fetchUserPosts();
   }
@@ -52,15 +55,16 @@ class _ProfilePageState extends State<ProfilePage> {
             onClicked: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => EditProfilePage(user: widget.user),
+                  builder: (context) => EditProfilePage(user: useru),
                 ),
               );
+              await updateUser();
             },
           ),
           const SizedBox(height: 24),
-          buildName(widget.user),
+          buildName(useru),
           const SizedBox(height: 48),
-          buildAbout(widget.user),
+          buildAbout(useru),
           const SizedBox(height: 48),
           buildPosts(),
         ],
@@ -93,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              user.name,
+              user.about,
               style: const TextStyle(fontSize: 16, height: 1.4),
             ),
           ],
@@ -221,6 +225,29 @@ class _ProfilePageState extends State<ProfilePage> {
           content: Text('Failed to delete post. Error: $e'),
         ),
       );
+    }
+  }
+
+  Future<bool> updateUser() async {
+    final email = widget.user.email;
+    final pass = widget.user.password;
+    var client = http.Client();
+    const url = 'http://localhost:8080/api/friends/user';
+    final uri = Uri.parse(url).replace(queryParameters: {
+      'UserEmail': email,
+      'UserPassword': pass,
+    });
+    final response = await client.get(uri);
+    final body = response.body;
+    if (body.isNotEmpty && response.statusCode == 200) {
+      final json = jsonDecode(body);
+      setState(() {
+        useru = User.fromJson(json);
+        useru.password = pass;
+      });
+      return true;
+    } else {
+      return false;
     }
   }
 }

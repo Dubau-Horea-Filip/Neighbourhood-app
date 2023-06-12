@@ -15,22 +15,7 @@ class PostListWidget extends StatefulWidget {
 }
 
 class _PostListWidgetState extends State<PostListWidget> {
-  List<String> availableGroups = [];
   List<String> selectedGroups = [];
-
-  @override
-  void initState() {
-    super.initState();
-    getSelectedGroups();
-  }
-
-  void getSelectedGroups() {
-    for (var post in widget.posts) {
-      if (!availableGroups.contains(post.group)) {
-        availableGroups.add(post.group);
-      }
-    }
-  }
 
   List<Post> getFilteredPosts() {
     if (selectedGroups.isEmpty) {
@@ -46,6 +31,15 @@ class _PostListWidgetState extends State<PostListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> availableGroups = [];
+
+    // Retrieve the selected groups
+    for (var post in widget.posts) {
+      if (!availableGroups.contains(post.group)) {
+        availableGroups.add(post.group);
+      }
+    }
+
     final filteredPosts = getFilteredPosts();
 
     return Column(

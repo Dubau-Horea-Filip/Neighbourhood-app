@@ -42,7 +42,7 @@ public class CommentController {
         for (Comment comment : comments) {
             CommentJson commentJson = new CommentJson();
 
-            commentJson.setId(String.valueOf(comment.getId()));
+            commentJson.setId(String.valueOf(comment.getid()));
             commentJson.setComment(comment.getComment());
             commentJson.setPostId(comment.getPost().getid().toString());
             commentJson.setEmail(comment.getUser().getEmail());
@@ -60,9 +60,9 @@ public class CommentController {
         for (Comment comment : comments) {
             CommentJson commentJson = new CommentJson();
 
-            commentJson.setId(String.valueOf(comment.getId()));
+            commentJson.setId(String.valueOf(comment.recieveTheidentity()));
             commentJson.setComment(comment.getComment());
-            commentJson.setPostId(comment.getPost().getid().toString());
+            commentJson.setPostId(comment.getPost().recieveTheidentity().toString());
             commentJson.setEmail(comment.getUser().getEmail());
           if(Objects.equals(commentJson.getPostId(), postId.toString()))
             commentJsonList.add(commentJson);
@@ -70,6 +70,24 @@ public class CommentController {
 
         return commentJsonList;
     }
+
+//    @GetMapping("/comments_of_post")
+//    public List<CommentJson> getComments(@RequestParam("postJson") PostJson post) {
+//        List<Comment> comments = commentRepo.findAll();
+//        List<CommentJson> commentJsonList = new ArrayList<>();
+//        for (Comment comment : comments) {
+//            CommentJson commentJson = new CommentJson();
+//
+//            commentJson.setId(String.valueOf(comment.getid()));
+//            commentJson.setComment(comment.getComment());
+//            commentJson.setPostId(comment.getPost().recieveTheidentity().toString());
+//            commentJson.setEmail(comment.getUser().getEmail());
+//            if(Objects.equals(commentJson.getPostId(), post.getId()))
+//                commentJsonList.add(commentJson);
+//        }
+//
+//        return commentJsonList;
+//    }
 
 
 

@@ -38,7 +38,9 @@ class NavBar extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (_) => AddGroupsAddFrinds(
                             user: user,
-                          )))
+                          ))
+                          )
+                          
             },
           ),
           ListTile(
@@ -61,14 +63,14 @@ class NavBar extends StatelessWidget {
           //         MaterialPageRoute(builder: (_) => ProfilePage(user: user)))
           //   },
           // ),
-          ListTile(
-            leading: const Icon(Icons.security),
-            title: const Text('Security'),
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const ChangePaswordPage()))
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.security),
+          //   title: const Text('Security'),
+          //   onTap: () => {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (_) => const ChangePaswordPage()))
+          //   },
+          // ),
           const Divider(),
           ListTile(
             title: const Text('Logout'),

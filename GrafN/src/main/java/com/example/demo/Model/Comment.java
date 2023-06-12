@@ -46,7 +46,12 @@ public class Comment {
         this.post = post;
     }
 
-    public Long getId() {
+    public Long recieveTheidentity()
+    {
+        return this.id;
+    }
+
+    public Long getid() {
         return id;
     }
 }
