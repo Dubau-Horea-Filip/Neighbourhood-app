@@ -1,1 +1,3 @@
 # GR
+
+The app studies the utilization of graph databases and container technologies in social applications. It examines the benefits of graph databases for establishing connections and performing rapid queries in social networking scenarios. It also highlights the role of container technologies like Docker in enhancing scalability and portability in social applications. The paper presents the approach to designing a social networking app that utilizes Spring Data Neo4j as the backend, providing a standardized way to interact with the graph database. On the front-end side, the app is developed using Flutter.

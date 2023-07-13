@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:neighborhood_app/Widgets/text_box.dart';
 import '../Model/User.dart';
 import '../Widgets/button.dart';
-import '../Widgets/textfield_widget.dart';
+import '../Widgets/dropdown.dart';
 
 class NewPostPage extends StatefulWidget {
   final User user;
@@ -43,17 +44,28 @@ class _NewPostPageState extends State<NewPostPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFieldWidgetController(
-              controller: groupController,
-              label: 'Group',
-              isVisible: true,
+            DropdownWidget(
+              label: 'Select a group',
+              items: widget.user.groups,
+              onChanged: (selectedItem) {
+                // Handle the selected item here
+                groupController.text = selectedItem;
+                //print('Selected item: $selectedItem');
+              },
             ),
-            const SizedBox(height: 16.0),
-            TextFieldWidgetController(
-              controller: postContentController,
-              label: 'Post Content',
-              isVisible: true,
-            ),
+            TextBox(postContentController, "post content"),
+
+            // TextFieldWidgetController(
+            //   controller: groupController,
+            //   label: 'Group',
+            //   isVisible: true,
+            // ),
+            // const SizedBox(height: 16.0),
+            // TextFieldWidgetController(
+            //   controller: postContentController,
+            //   label: 'Post Content',
+            //   isVisible: true,
+            // ),
             const SizedBox(height: 26.0),
             ButtonWidget(
               onClicked: () async {

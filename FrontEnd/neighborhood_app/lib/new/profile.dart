@@ -130,13 +130,13 @@ class _ProfilePageState extends State<ProfilePage> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      // Handle edit post action
-                      editPost(post);
-                    },
-                    icon: const Icon(Icons.edit),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     // Handle edit post action
+                  //     editPost(post);
+                  //   },
+                  //   icon: const Icon(Icons.edit),
+                  // ),
                   IconButton(
                     onPressed: () {
                       // Handle delete post action
