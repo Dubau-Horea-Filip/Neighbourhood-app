@@ -1,0 +1,11 @@
+qodana:
+image:
+name: jetbrains/qodana-<linter>
+entrypoint: [""]
+variables:
+QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiJwNEVZNCIsInByb2plY3QiOiJwNDJ5byIsInRva2VuIjoiM1haR3EifQ.b3I1xMNuxYud69fTSEu5R2Y1e2P7PpDT-VLt_WC2Zvg
+script:
+- qodana
+artifacts:
+paths:
+- qodana
